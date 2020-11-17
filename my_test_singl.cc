@@ -12,11 +12,14 @@
 static constexpr uint64_t pagesize = 1024 * 4;
 static constexpr uint64_t pagenum = 500;
 
+//单核. CFS 5m36s, 自定义4m1s
+//多核. CFS 1m26s, 自定义41s
+
 void Run(int idx)
 {
     if(idx % 5) {
         int a,b;
-        for(int j = 0;j < 20;j++)
+        for(int j = 0;j < 50;j++)
         {
             for(int i = 0; i < 120000000; i++) 
             {
@@ -25,7 +28,7 @@ void Run(int idx)
         }
     } else {
         int a,b;
-        for(int j = 0;j < 20;j++)
+        for(int j = 0;j < 50;j++)
         {
             for(int i = 0; i < 120000000; i++) 
             {

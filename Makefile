@@ -1,4 +1,6 @@
-my-test:
-	g++ -g -o mytest test1.cc
+single:
+	g++ -g -o my_test_single my_test_single.cc
+multiple:
+	g++ -g -o my_test_multiple my_test_multiple.cc
 clean:
-	rm -rf *.o
+	rm -rf my_test_single my_test_multiple
