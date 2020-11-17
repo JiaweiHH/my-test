@@ -46,11 +46,11 @@ void Run(int idx)
 
 int main(int argc, char const *argv[])
 {
-    
     cpu_set_t mask;
     CPU_ZERO(&mask);
     CPU_SET(2, &mask);
-    sched_setaffinity(0, sizeof(cpu_set_t), &mask);
+    if(strcmp(argv[1], "single") || strcmp(argv[1], "Single"))
+        sched_setaffinity(0, sizeof(cpu_set_t), &mask);
     for(int i = 0;i < 30;i++)
     {
         if(fork() == 0) {
