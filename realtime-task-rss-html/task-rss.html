@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+  <meta charset="utf-8">
+</head>
+<!-- 浏览器对画布的面积、宽高有限制，不能过大，需根据实际情况调整 -->
+
+<body style="height: 100%; margin: 0">
+  <div>
+    <!--这是一个选择本地文件的input框-->
+    <label for="memberInformation" style='margin-left:20px;'>
+      选择配置数据
+      <!--这个位置监听了一个input框传出来的事件-->
+      <input id="data" type="file" onchange="importf(this)" />
+    </label>
+  </div>
+
+  <div id="container" style="height: 90%"></div>
+  <script type="text/javascript" src="./asset/echarts.min.js"></script>
+  <script type="text/javascript" src="./asset/ecStat.min.js"></script>
+  <script type="text/javascript" src="./asset/dataTool.min.js"></script>
+  <script type="text/javascript"
+    src="https://api.map.baidu.com/api?v=2.0&ak=m3OjfD1S6h5MEOlNXdcTOzzyvKjUyifh&__ec_v__=20190126"></script>
+  <script type="text/javascript">
+    var dmesgData = { // sankey 图即有向无环图的边点配置
+
+    }
+
+    /**
+     * 初始化图表
+     */
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+
+    var option = {
+      title: {
+        text: 'task RSS'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        }
+      },
+      xAxis: {
+        type: 'value',
+        splitLine: {
+          lineStyle: {
+            type: 'dashed'
+          }
+        },
+      },
+      yAxis: {
+        type: 'value',
+        min: 1.5,
+        splitLine: {
+          lineStyle: {
+            type: 'dashed'
+          }
+        },
+      },
+      dataZoom: [{
+        type: 'inside'
+      }, {
+        type: 'slider'
+      }],
+    };
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+
+    // 处理配置文件的数据，生成符合 echarts 格式的配置
+    function dataOperation(orgData) {
+      orgData.forEach(element => {
+        if (element.indexOf('pid:') == -1) {
+          return;
+        }
+
+        var lineData = element.split(' ');
+        var pidIndex = lineData.indexOf('pid:');
+        var pid = lineData[pidIndex + 1].split(',')[0];
+        var timestramp = lineData[pidIndex - 1].split(']')[0];
+        var rss = lineData[pidIndex + 3];
+
+        if (dmesgData[pid]) {
+          dmesgData[pid].push([timestramp, rss]);
+        } else {
+          dmesgData[pid] = [[timestramp, rss]];
+        }
+      })
+    }
+
+    // 动态添加 pid 数据到整体中
+    function dataInstall() {
+      var series = [];
+      console.log(dmesgData)
+      Object.keys(dmesgData).forEach(element => {
+        series.push({
+          name: element,
+          type: 'scatter',
+          symbolSize: 3,
+          animation: false,
+          data: dmesgData[element]
+        });
+      });
+      // 动态设置图表选项
+      myChart.setOption({
+        series: series,
+        legend: {
+          data: Object.keys(dmesgData),
+        },
+      });
+    }
+
+    // 文件选择事件处理
+    function importf(obj) {
+      if (!obj.files) {
+        return;
+      }
+      // 这里的 f 被初始化为之前选择的文件，文件类型的数据结构可以查文档
+      var f = obj.files[0];
+
+      // h5 文件读取 API，只能一次性读取整个文件的内容，对大文件不利
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var fileData = e.target.result.split("\n")
+        console.log(fileData.length)
+        dataOperation(fileData)
+        dataInstall()
+      };
+      reader.readAsText(f); // 文本文件形式读取
+    }
+  </script>
+</body>
+
+</html>
