@@ -19,7 +19,7 @@ static constexpr uint64_t pagenum = 500;
 
 void Run(int idx)
 {
-    if(idx % 5) {
+    if(idx % 2) {
         int a,b;
         for(int j = 0;j < 50;j++)
         {
@@ -69,7 +69,7 @@ int main(int argc, char const *argv[])
     set_affinity();
     set_priority();
 
-    for(int i = 0;i < 30;i++)
+    for(int i = 0;i < 10;i++)
     {
         if(fork() == 0) {
             Run(i);
