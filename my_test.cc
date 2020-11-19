@@ -19,6 +19,7 @@ static const int pagenum = 500;
 
 void Run(int idx)
 {
+    int pid = getpid();
     if(idx % 2) {
         int a,b;
         for(int j = 0;j < 50;j++)
@@ -39,6 +40,7 @@ void Run(int idx)
             if(j % 10 == 0) {
                 char* p = (char*)malloc(pagesize * idx * 100);
                 memset(p,1,pagesize * idx * 100);
+                printf("pid: %d, alloc: %d pages\n", pid, idx*100);
             }
         }
     }
@@ -66,7 +68,7 @@ void set_priority(){
 
 int main(int argc, char const *argv[])
 {
-    set_affinity();
+    // set_affinity();
     set_priority();
 
     for(int i = 0;i < 10;i++)
