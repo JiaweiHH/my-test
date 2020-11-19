@@ -16,6 +16,7 @@ static const int pagenum = 500;
 //30个进程单核. CFS 5m36s, 自定义4m1s
 //30个进程多核. CFS 1m26s, 自定义41s
 
+
 void Run(int idx)
 {
     if(idx % 2) {
@@ -36,8 +37,8 @@ void Run(int idx)
                 a = b;
             }    
             if(j % 10 == 0) {
-                char* p = (char*)malloc(pagesize * pagenum);
-                memset(p,1,pagesize * pagenum);
+                char* p = (char*)malloc(pagesize * idx * 100);
+                memset(p,1,pagesize * idx * 100);
             }
         }
     }
