@@ -66,7 +66,7 @@ void set_priority(){
 
 int main(int argc, char const *argv[])
 {
-    set_affinity();
+    // set_affinity();
     set_priority();
 
     for(int i = 0;i < 10;i++)
