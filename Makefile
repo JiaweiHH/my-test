@@ -1,3 +1,3 @@
 .PHONY: my_test
 my_test:
-	g++ -g -o my_test my_test.cc
+	gcc -o my_test my_test.cc

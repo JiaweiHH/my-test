@@ -1,18 +1,17 @@
-#include <vector>
-#include <iostream>
-#include <pthread.h>
 #include <unistd.h>
 #include <sched.h>
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <sys/resource.h>
 
-static constexpr uint64_t pagesize = 1024 * 4;
-static constexpr uint64_t pagenum = 500;
+static const int pagesize = 1024 * 4;
+static const int pagenum = 500;
 
 //30个进程单核. CFS 5m36s, 自定义4m1s
 //30个进程多核. CFS 1m26s, 自定义41s
@@ -61,7 +60,7 @@ void set_priority(){
     int oldpri = getpriority(PRIO_PROCESS, pid);
     setpriority(PRIO_PROCESS, getpid(), 1);
     int newpri = getpriority(PRIO_PROCESS, pid);
-    printf("oldpri: %d, newpri: %d\n", pid, oldpri, newpri);
+    printf("oldpri: %d, newpri: %d\n", oldpri, newpri);
 }
 
 int main(int argc, char const *argv[])
