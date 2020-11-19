@@ -6,8 +6,10 @@
 
 ### RUN
 
-1. `dmesg --follow > mydmesg.log` 生成可视化配置文件
-2. 在浏览器打开 [task-rss.html](./realtime-task-rss-html/task-rss.html)
+1. `dmesg --follow > mydmesg.log` 记录内存使用信息
+2. `sudo trace-cmd record -e 'sched_*'` 记录调度信息
+3. `time ./my_test` 运行测试程序，并记录运行时间，结束后手动停止上两个程序
+4. 在浏览器打开 [task-rss.html](./realtime-task-rss-html/task-rss.html)，选择要可视化的 log 数据
 
 ### 参考
 
